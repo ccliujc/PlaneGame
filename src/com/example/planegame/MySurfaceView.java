@@ -1,10 +1,5 @@
 package com.example.planegame;
 
-
-
-
-
-
 import com.planegame.R;
 
 import android.content.Context;
@@ -27,6 +22,16 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	private SurfaceHolder sfh;
 	
 	private Thread th;
+	
+	//定义游戏状态常量
+	public static final int GAME_MENU = 0;//游戏菜单 开始界面
+	public static final int GAMEING = 1;//游戏中
+	public static final int GAME_WIN = 2;//游戏胜利
+	public static final int GAME_LOSE = 3;//游戏失败
+	public static final int GAME_PAUSE = -1;//游戏菜单 游戏暂停时菜单
+	//当前游戏状态（默认初始在游戏菜单界面）
+	public static final int gameState = GAME_MENU;
+	
 
 	public MySurfaceView(Context context) {
 		super(context);
@@ -87,8 +92,17 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	}
 
 	private void logic() {
-		// TODO Auto-generated method stub
-		
+		//逻辑处理根据游戏状态不同进行不同处理
+		switch(gameState) {
+		case GAME_MENU:
+			break;
+		case GAMEING:
+			break;
+		case GAME_WIN:
+			break;
+		case GAME_LOSE:
+			break;
+		}
 	}
 
 	private void myDraw() {
@@ -99,15 +113,27 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 				// 这里明明设置的是WHITE可不知道为什么显示出来的缺少BLACK 问题已解决！在上面thread那里
 				canvas.drawColor(Color.WHITE);
-
-				canvas.drawText("hello word", 100, 100, paint);
+				
+				//绘图函数根据游戏状态不同进行不同绘制
+				switch(gameState) {
+				case GAME_MENU:
+					break;
+				case GAMEING:
+					break;
+				case GAME_WIN:
+					break;
+				case GAME_LOSE:
+					break;
+				}
+				
+				
+				
+				
 
 				// 如果使用strings中的文字就应该这么来应用
 				// 当然应用前要把import。R.id改成import com.planegame.R;不然会出错的
 				// 麻袋换不对 我就不知道了 擦！！不知道到底应该怎么用
 				// canvas.drawText(R.string.hello_world, 100, 300, paint);
-				 
-				 
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated method stub
@@ -120,6 +146,17 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		//触屏监听事件函数根据游戏状态不同进行不同监听
+		switch(gameState) {
+		case GAME_MENU:
+			break;
+		case GAMEING:
+			break;
+		case GAME_WIN:
+			break;
+		case GAME_LOSE:
+			break;
+		}
 		return true;
 	}
 
