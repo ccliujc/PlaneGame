@@ -13,9 +13,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//ÉèÖÃÈ«ÆÁ
+		//è®¾ç½®ç«–å±
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		//ÉèÖÃÃ»ÓĞ×´Ì¬À¸
+		//è®¾ç½®ä¸Šéƒ¨çš„ä¿¡æ¯å¯¼èˆªæ¡
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(new MySurfaceView(this));
 	}

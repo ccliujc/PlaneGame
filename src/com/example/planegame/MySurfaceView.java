@@ -23,13 +23,13 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	
 	private Thread th;
 	
-	//¶¨ÒåÓÎÏ·×´Ì¬³£Á¿
-	public static final int GAME_MENU = 0;//ÓÎÏ·²Ëµ¥ ¿ªÊ¼½çÃæ
-	public static final int GAMEING = 1;//ÓÎÏ·ÖĞ
-	public static final int GAME_WIN = 2;//ÓÎÏ·Ê¤Àû
-	public static final int GAME_LOSE = 3;//ÓÎÏ·Ê§°Ü
-	public static final int GAME_PAUSE = -1;//ÓÎÏ·²Ëµ¥ ÓÎÏ·ÔİÍ£Ê±²Ëµ¥
-	//µ±Ç°ÓÎÏ·×´Ì¬£¨Ä¬ÈÏ³õÊ¼ÔÚÓÎÏ·²Ëµ¥½çÃæ£©
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·×´Ì¬ï¿½ï¿½ï¿½ï¿½
+	public static final int GAME_MENU = 0;//æ¸¸æˆèœå• å¼€å§‹
+	public static final int GAMEING = 1;//æ¸¸æˆä¸­
+	public static final int GAME_WIN = 2;//æ¸¸æˆèƒœåˆ©
+	public static final int GAME_LOSE = 3;//æ¸¸æˆå¤±è´¥
+	public static final int GAME_PAUSE = -1;//æ¸¸æˆèœå• æš‚åœ
+	//å½“å‰æ¸¸æˆçŠ¶æ€ï¼ˆé»˜è®¤åˆå§‹åœ¨æ¸¸æˆèœå•ç•Œé¢ï¼‰
 	public static final int gameState = GAME_MENU;
 	
 
@@ -39,14 +39,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		paint.setColor(Color.YELLOW);
 		paint.setTextSize(40);
 		
-		//ÊµÀı»¯canvas ²»ÖªµÀĞè²»ĞèÒªÒª Àı×ÓÖĞ¶¼Ã»ÓĞ¼Ó
+		//*å®ä¾‹åŒ–ä¸€ä¸ªCanvas ä¸çŸ¥é“æœ‰æ²¡æœ‰å¿…è¦ æ¨¡ä»¿çš„ä¾‹å­é‡Œé¢æ²¡æœ‰å†™
 		canvas = new Canvas();
 		
-		//×ÜĞ´´íµÄËµ
+		//*æ€»å†™é”™è¯¶
 		sfh = this.getHolder();
 		sfh.addCallback(this);
 		
-		//ÉèÖÃ½¹µã  ×ÜÍüÕâÒ»¾ä ËäÈ»Ò²²»ÖªµÀ ÓĞÃ»ÓĞÓ°Ïì
+		//*æ€»å¿˜è®°å†™å•Šå–‚
 		setFocusable(true);
 		
 	}
@@ -63,7 +63,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		screenH = this.getHeight();
 		
 		flag = true;
-		//À¨ºÅÀïÃ»¼Óthisµ¼ÖÂrun()²»Ë¢ĞÂ£¡£¡£¡
+		//å†™äº†Thread()æ²¡æœ‰ç»™æ‹¬å·é‡ŒåŠ this run()å°±ä¸ä¼šä¸€ç›´run
 		th = new Thread(this);
 		th.start();
 		
@@ -92,7 +92,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	}
 
 	private void logic() {
-		//Âß¼­´¦Àí¸ù¾İÓÎÏ·×´Ì¬²»Í¬½øĞĞ²»Í¬´¦Àí
+		//é€»è¾‘å¤„ç†å‡½æ•°æ ¹æ®æ¸¸æˆçŠ¶æ€ä¸åŒè¿›è¡Œä¸åŒå¤„ç†
 		switch(gameState) {
 		case GAME_MENU:
 			break;
@@ -111,10 +111,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			canvas = sfh.lockCanvas();
 			if (canvas != null) {
 
-				// ÕâÀïÃ÷Ã÷ÉèÖÃµÄÊÇWHITE¿É²»ÖªµÀÎªÊ²Ã´ÏÔÊ¾³öÀ´µÄÈ±ÉÙBLACK ÎÊÌâÒÑ½â¾ö£¡ÔÚÉÏÃæthreadÄÇÀï
+				//ç”¨ç™½è‰²åˆ·å±
 				canvas.drawColor(Color.WHITE);
 				
-				//»æÍ¼º¯Êı¸ù¾İÓÎÏ·×´Ì¬²»Í¬½øĞĞ²»Í¬»æÖÆ
+				//ç»˜å›¾å‡½æ•°æ ¹æ®æ¸¸æˆçŠ¶æ€ä¸åŒè¿›è¡Œä¸åŒç»˜åˆ¶
 				switch(gameState) {
 				case GAME_MENU:
 					break;
@@ -130,9 +130,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 				
 				
 
-				// Èç¹ûÊ¹ÓÃstringsÖĞµÄÎÄ×Ö¾ÍÓ¦¸ÃÕâÃ´À´Ó¦ÓÃ
-				// µ±È»Ó¦ÓÃÇ°Òª°Ñimport¡£R.id¸Ä³Éimport com.planegame.R;²»È»»á³ö´íµÄ
-				// Âé´ü»»²»¶Ô ÎÒ¾Í²»ÖªµÀÁË ²Á£¡£¡²»ÖªµÀµ½µ×Ó¦¸ÃÔõÃ´ÓÃ
+			
+				//*æƒ³ä½¿ç”¨stringsã€‚xmlä¸­å®šä¹‰çš„å­—ç¬¦ä¸²æœªæœ
 				// canvas.drawText(R.string.hello_world, 100, 300, paint);
 			}
 		} catch (Exception e) {
@@ -146,7 +145,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		//´¥ÆÁ¼àÌıÊÂ¼şº¯Êı¸ù¾İÓÎÏ·×´Ì¬²»Í¬½øĞĞ²»Í¬¼àÌı
+		//è§¦å±ç›‘å¬äº‹ä»¶æ ¹æ®æ¸¸æˆçŠ¶æ€çš„ä¸åŒè¿›è¡Œä¸åŒç›‘å¬
 		switch(gameState) {
 		case GAME_MENU:
 			break;
