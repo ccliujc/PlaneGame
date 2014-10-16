@@ -64,6 +64,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	//声明一个菜单对象
 	private GameMenu gameMenu;
 	
+	//声明一个滚动游戏背景对象
+	private GameBg backGround;
+	
 	
 
 	public MySurfaceView(Context context) {
@@ -135,6 +138,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			
 			//菜单类实例
 			gameMenu = new GameMenu(bmpMenu, bmpButton, bmpButtonPress);
+			
+			//实例游戏背景
+			backGround = new GameBg(bmpBackGround);
 		}
 	}
 
@@ -161,6 +167,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		case GAME_MENU:
 			break;
 		case GAMEING:
+			//背景逻辑
+			backGround.logic();
 			break;
 		case GAME_WIN:
 			break;
@@ -185,6 +193,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					gameMenu.draw(canvas, paint);
 					break;
 				case GAMEING:
+					//游戏背景
+					backGround.draw(canvas, paint);
 					break;
 				case GAME_WIN:
 					break;
