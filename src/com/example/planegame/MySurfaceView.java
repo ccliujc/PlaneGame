@@ -67,6 +67,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	//声明一个滚动游戏背景对象
 	private GameBg backGround;
 	
+	//声明主角对象
+	private Player player;
+	
 	
 
 	public MySurfaceView(Context context) {
@@ -141,6 +144,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			
 			//实例游戏背景
 			backGround = new GameBg(bmpBackGround);
+			
+			//实例主角
+			player = new Player(bmpPlayer, bmpPlayerHp);
 		}
 	}
 
@@ -169,6 +175,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		case GAMEING:
 			//背景逻辑
 			backGround.logic();
+			//主角的逻辑
+			player.logic();
 			break;
 		case GAME_WIN:
 			break;
@@ -195,6 +203,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 				case GAMEING:
 					//游戏背景
 					backGround.draw(canvas, paint);
+					//主角绘图函数
+					player.draw(canvas, paint);
 					break;
 				case GAME_WIN:
 					break;
@@ -228,6 +238,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			gameMenu.onTouchEvent(event);
 			break;
 		case GAMEING:
+			//主角的触屏处理事件
+			player.onTouchEvent(event);
 			break;
 		case GAME_WIN:
 			break;
