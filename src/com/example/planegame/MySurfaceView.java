@@ -203,6 +203,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			backGround.logic();
 			// 主角的逻辑
 			player.logic();
+			
+			//处理敌机与主角的碰撞
+			for(int i = 0; i < vcEnemy.size(); i ++) {
+				if(player.isCollsionWith(vcEnemy.elementAt(i))) {
+					//发生碰撞，主角血量-1
+					player.setPlayerHp(player.getPlayerHp() - 1);
+				}
+			}
 
 			// 敌机逻辑
 			if (isBoss == false) {
@@ -287,9 +295,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					}else {
 						//Boss绘制
 					}
-					//测试用
-					canvas.drawText("enemyArrayIndex = " + enemyArrayIndex
-							+ "    count =  " + count + "   isBoss = " + isBoss, 100, 100, paint);
+					
 					break;
 				case GAME_WIN:
 					break;

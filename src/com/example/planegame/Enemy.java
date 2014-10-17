@@ -18,7 +18,7 @@ public class Enemy {
 	//敌机坐标
 	public int x, y;
 	//敌机每帧的宽高；
-	private int frameW, frameH;
+	public int frameW, frameH;
 	//敌机当前帧的下标
 	private int frameIndex;
 	//敌机的移动速度
