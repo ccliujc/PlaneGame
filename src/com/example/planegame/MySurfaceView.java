@@ -76,7 +76,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		super(context);
 		paint = new Paint();
 		paint.setColor(Color.YELLOW);
-		paint.setTextSize(40);
+		
 		
 		//*实例化一个Canvas 不知道有没有必要 模仿的例子里面没有写
 		canvas = new Canvas();
