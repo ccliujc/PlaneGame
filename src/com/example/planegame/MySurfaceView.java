@@ -1,6 +1,9 @@
 package com.example.planegame;
 
 
+import java.util.Random;
+import java.util.Vector;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -70,6 +73,23 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	//声明主角对象
 	private Player player;
 	
+	//声明一个敌机容器
+	private Vector<Enemy> vcEnemy;
+	//每次生成敌机的时间（毫秒）
+	private int createEnemyTime = 50;
+	private int count;//计数器
+	//敌人数组：1和2代表敌机的种类，-1表示Boss
+	//二维数组的每一维都是一组怪物
+	private int enemyArray[][] = { { 1, 2 }, { 1, 1 }, { 1, 3, 1, 2 },
+			{ 1, 2 }, { 2, 3 }, { 3, 1, 3 }, { 2, 2 }, { 1, 2 }, { 2, 2 },
+			{ 1, 3, 1, 1 }, { 2, 1 }, { 1, 3 }, { 2, 1 }, { -1 } };
+	
+	//当前取出一维数组的下标
+	private int enemyArrayIndex;
+	//是否出现Boss标识位
+	private boolean  isBoss;
+	//随机库，为创建的敌机赋予随机坐标
+	private Random random;
 	
 
 	public MySurfaceView(Context context) {
@@ -110,6 +130,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		th = new Thread(this);
 		th.start();
 		
+	
 	}
 
 	@Override
@@ -147,6 +168,11 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			
 			//实例主角
 			player = new Player(bmpPlayer, bmpPlayerHp);
+			
+			//实例敌机容器
+			vcEnemy = new Vector<Enemy>();
+			//实例随机库
+			random = new Random();
 		}
 	}
 
@@ -168,15 +194,61 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	}
 
 	private void logic() {
-		//逻辑处理函数根据游戏状态不同进行不同处理
-		switch(gameState) {
+		// 逻辑处理函数根据游戏状态不同进行不同处理
+		switch (gameState) {
 		case GAME_MENU:
 			break;
 		case GAMEING:
-			//背景逻辑
+			// 背景逻辑
 			backGround.logic();
-			//主角的逻辑
+			// 主角的逻辑
 			player.logic();
+
+			// 敌机逻辑
+			if (isBoss == false) {
+				// 敌机逻辑
+				for (int i = 0; i < vcEnemy.size(); i++) {
+					Enemy en = vcEnemy.elementAt(i);
+					// 因为容器不断添加敌机，那么对敌机的isDead判定，
+					// 如果已死亡那么就从容器中删除，对容器起到了优化作用；
+					if (en.isDead) {
+						vcEnemy.removeElementAt(i);
+
+					} else {
+						en.logic();
+					}
+				}
+				// 生成敌机
+				count++;
+				if (count % createEnemyTime == 0) {
+					for (int i = 0; i < enemyArray[enemyArrayIndex].length; i++) {
+						// 苍蝇
+						if (enemyArray[enemyArrayIndex][i] == 1) {
+							int x = random.nextInt(screenW - 100) + 50;
+							vcEnemy.addElement(new Enemy(bmpEnemyFly, 1, x, -50));
+							// 鸭子左
+						} else if (enemyArray[enemyArrayIndex][i] == 2) {
+							int y = random.nextInt(20);
+							vcEnemy.addElement(new Enemy(bmpEnemyDuck, 2, -50,
+									y));
+							// 鸭子右
+						} else if (enemyArray[enemyArrayIndex][i] == 3) {
+							int y = random.nextInt(20);
+							vcEnemy.addElement(new Enemy(bmpEnemyDuck, 3,
+									screenW + 50, y));
+						}
+					}
+					// 这里判断下一组是否为最后一组（Boss）
+					if (enemyArrayIndex == enemyArray.length - 1) {
+						isBoss = true;
+					} else {
+						enemyArrayIndex++;
+					}
+				}
+			} else {
+				// Boss逻辑
+
+			}
 			break;
 		case GAME_WIN:
 			break;
@@ -201,10 +273,23 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					gameMenu.draw(canvas, paint);
 					break;
 				case GAMEING:
+					
 					//游戏背景
 					backGround.draw(canvas, paint);
 					//主角绘图函数
 					player.draw(canvas, paint);
+					//怪物绘图函数
+					if(isBoss == false) {
+						//敌机绘制
+						for(int i = 0; i < vcEnemy.size(); i ++){
+							vcEnemy.elementAt(i).draw(canvas, paint);
+						}
+					}else {
+						//Boss绘制
+					}
+					//测试用
+					canvas.drawText("enemyArrayIndex = " + enemyArrayIndex
+							+ "    count =  " + count + "   isBoss = " + isBoss, 100, 100, paint);
 					break;
 				case GAME_WIN:
 					break;

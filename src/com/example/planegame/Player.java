@@ -17,7 +17,7 @@ public class Player {
 	// 主角移动速度
 	private int speed = 5;
 	// 主角的移动标识
-	private Boolean isUp, isDown, isLeft, isRight;
+	private boolean isUp, isDown, isLeft, isRight;
 	
 	//
 	private int pointX, pointY;
