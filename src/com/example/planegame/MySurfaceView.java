@@ -38,7 +38,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	public static final int GAME_MENU = 0;//游戏菜单 开始
 	public static final int GAMEING = 1;//游戏中
 	public static final int GAME_WIN = 2;//游戏胜利
-	public static final int GAME_LOST = 3;//游戏失败
+	public static final int GAME_LOSE = 3;//游戏失败
 	public static final int GAME_PAUSE = -1;//游戏菜单 暂停
 	//当前游戏状态（默认初始在游戏菜单界面）
 	public static int gameState = GAME_MENU;
@@ -90,16 +90,6 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	private boolean  isBoss;
 	//随机库，为创建的敌机赋予随机坐标
 	private Random random;
-	
-	
-	//敌机子弹容器
-	private Vector<Bullet> vcBullet = new Vector<Bullet>();
-	//添加子弹的计数器
-	private int countEnemyBullet;
-	//主角子弹容器
-	private Vector<Bullet> vcBulletPlayer = new Vector<Bullet>();
-	//添加子弹的计数器
-	private int countPlayerBullet;
 	
 
 	public MySurfaceView(Context context) {
@@ -221,31 +211,6 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					player.setPlayerHp(player.getPlayerHp() - 1);
 				}
 			}
-			
-			
-			//处理敌机子弹与主角碰撞
-			for(int i = 0; i < vcBullet.size(); i++) {
-				if(player.isCollisionWith(vcBullet.elementAt(i))){
-					//发生碰撞，主角血量-1
-					player.setPlayerHp(player.getPlayerHp() - 1);
-					//当主角血量小于0时，判断游戏失败
-					if(player.getPlayerHp() <= -1) {
-						gameState = GAME_LOST;
-					}
-				}
-			}
-			
-			//处理主角子弹与敌机碰撞
-			for(int i = 0; i < vcBulletPlayer.size(); i++ ) {
-				//取出主角子弹容器德尔每个元素
-				Bullet blPlayer = vcBulletPlayer.elementAt(i);
-				for(int j = 0; j < vcEnemy.size(); j++) {
-					//取出敌机容器的每个元与主角子弹遍历判断
-					if(vcEnemy.elementAt(j).isCollisionWith(blPlayer)){
-						//添加爆咋效果
-					}
-				}
-			}
 
 			// 敌机逻辑
 			if (isBoss == false) {
@@ -288,64 +253,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 						enemyArrayIndex++;
 					}
 				}
-				
-			
-				//每2秒添加一个敌机子弹
-				countEnemyBullet ++;
-				if(countEnemyBullet % 40 == 0) {
-					for(int i = 0; i < vcEnemy.size(); i++) {
-						Enemy en = vcEnemy.elementAt(i);
-						//不同类型的敌机不同的子弹运动轨迹
-						int bulletType = 0;
-						switch(en.type) {
-						//苍蝇
-						case Enemy.TYPE_FLY:
-							bulletType = Bullet.BULLET_FLY;
-							break;
-						//鸭子
-						case Enemy.TYPE_DUCKL:
-						case Enemy.TYPE_DUCKR:
-							bulletType = Bullet.BULLET_DUCK;
-							break;
-						}
-						vcBullet.add(new Bullet(bmpEnemyBullet, en.x + 10, en.y + 20, bulletType));
-					}
-				}
-				//处理子弹的逻辑
-				for(int i = 0; i < vcBullet.size(); i++) {
-					Bullet b = vcBullet.elementAt(i);
-					if(b.isDead){
-						vcBullet.removeElement(b);
-					} else {
-						b.logic();
-					}
-				}
-				
-				
 			} else {
 				// Boss逻辑
 
 			}
-			
-			//每秒添加一个主角子弹
-			countPlayerBullet++;
-			if(countPlayerBullet % 20 == 0) {
-				vcBulletPlayer.add(new Bullet(bmpBullet, player.x + bmpPlayer.getWidth()/2 - bmpBullet.getWidth()/2,
-						player.y - 20, Bullet.BULLET_PLAYER));
-			}
-			//处理主角子弹逻辑
-			for(int i = 0; i < vcBulletPlayer.size(); i++) {
-				Bullet b = vcBulletPlayer.elementAt(i);
-				if(b.isDead){
-					vcBulletPlayer.removeElement(b);
-				}else{
-					b.logic();
-				}
-			}
 			break;
 		case GAME_WIN:
 			break;
-		case GAME_LOST:
+		case GAME_LOSE:
 			break;
 		}
 	}
@@ -377,27 +292,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 						for(int i = 0; i < vcEnemy.size(); i ++){
 							vcEnemy.elementAt(i).draw(canvas, paint);
 						}
-						
-						//敌机子弹绘制
-						for(int i = 0; i < vcBullet.size(); i ++){
-							vcBullet.elementAt(i).draw(canvas, paint);
-						}
-						
 					}else {
 						//Boss绘制
-					}
-
-					
-					//处理主角子弹的绘制
-					for(int i = 0; i < vcBulletPlayer.size(); i++) {
-						vcBulletPlayer.elementAt(i).draw(canvas, paint);
 					}
 					
 					break;
 				case GAME_WIN:
 					break;
-				case GAME_LOST:
-					canvas.drawBitmap(bmpGameLost, 0, 0,paint);
+				case GAME_LOSE:
 					break;
 				}
 				
@@ -432,7 +334,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			break;
 		case GAME_WIN:
 			break;
-		case GAME_LOST:
+		case GAME_LOSE:
 			break;
 		}
 		return true;

@@ -174,29 +174,4 @@ public class Player {
 			return false;
 		}
 	}
-	//判断碰撞（主角与敌机子弹）
-	public boolean isCollisionWith(Bullet bullet) {
-		//是否处于无敌时间
-		if(isCollision == false) {
-			int x2 = bullet.bulletX;
-			int y2 = bullet.bulletY;
-			int w2 = bullet.bmpBullet.getWidth();
-			int h2 = bullet.bmpBullet.getHeight();
-			if (x > x2 && x >= x2 + w2) {
-				return false;
-			} else if (x <= x2 && x + bmpPlayer.getWidth() <= x2) {
-				return false;
-			} else if (y >= y2 && y >= y2 + h2) {
-				return false;
-			} else if (y <= y2 && y + bmpPlayer.getHeight() <= y2) {
-				return false;
-			}
-			// 碰撞及进入无敌状态
-			isCollision = true;
-			return true;
-			// 处于无敌状态，无视碰撞
-		} else {
-			return false;
-		}
-	}
 }

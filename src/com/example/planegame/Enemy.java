@@ -100,24 +100,4 @@ public class Enemy {
 			break;
 		}
 	}
-	//判断碰撞（敌机与主角子弹碰撞）
-	public boolean isCollisionWith(Bullet bullet) {
-		int x2 = bullet.bulletX;
-		int y2 = bullet.bulletY;
-		int w2 = bullet.bmpBullet.getWidth();
-		int h2 = bullet.bmpBullet.getHeight();
-		
-		if(x >= x2 && x >= x2 + w2) {
-			return false;
-		}else if (x <= x2 && x + frameW <= x2) {
-			return false;
-		}else if (y >= y2 && y >= y2 + h2) {
-			return false;
-		}else if (y <= y2 && y + frameH <= y2) {
-			return false;
-		}
-		//发生碰撞，让其死亡
-		isDead = true;
-		return true;
-	}
 }
