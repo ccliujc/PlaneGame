@@ -99,7 +99,12 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	private Vector<Boom> vcBoom = new Vector<Boom>();
 	
 	
-
+	//声明Boss
+	private Boss boss;
+	//Boss的子弹容器
+	public static Vector<Bullet> vcBulletBoss;
+	
+	
 	public MySurfaceView(Context context) {
 		super(context);
 		paint = new Paint();
@@ -187,6 +192,12 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			vcEnemy = new Vector<Enemy>();
 			// 实例随机库
 			random = new Random();
+			
+			
+			//实例boss对象
+			boss = new Boss(bmpEnemyBoos);
+			//实例Boss子弹容器
+			vcBulletBoss = new Vector<Bullet>();
 		}
 	}
 
@@ -337,7 +348,53 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 			} else {
 				// Boss逻辑
-
+				//Boss相关逻辑
+				//每0.5秒添加一个Boss子弹
+				boss.logic();
+				if(countPlayerBullet % 10 == 0){
+					//Boss没有发疯之前的普通子弹
+					vcBulletBoss.add(new Bullet(bmpBossBullet, boss.x + 35, boss.y + 40, Bullet.BULLET_FLY));
+				}
+				//Boss的子弹逻辑
+				for(int i = 0; i < vcBulletBoss.size(); i++) {
+					Bullet b = vcBulletBoss.elementAt(i);
+					if(b.isDead){
+						vcBulletBoss.removeElement(b);
+					}else{
+						b.logic();
+					}
+				}
+				//Boss子弹与主角的碰撞
+				for(int i = 0; i < vcBulletBoss.size(); i ++) {
+					if(player.isCollisionWith(vcBulletBoss.elementAt(i))) {
+						//发生碰撞，主角血量-1
+						player.setPlayerHp(player.getPlayerHp() - 1);
+						//当主角血量小于0，判定游戏失败
+						if(player.getPlayerHp() <= -1) {
+							gameState = GAME_LOST;
+						}
+					}
+				}
+				//Boss被主角子弹击中，产生爆炸效果
+				for(int i = 0; i < vcBulletPlayer.size(); i++) {
+					Bullet b = vcBulletPlayer.elementAt(i);
+					if(boss.isCollisionWith(b)) {
+						if(boss.Hp <= 0) {
+							//游戏胜利
+							gameState = GAME_WIN;
+							
+						}else {
+							//及时删除本次碰撞的子弹，防止重复判定此子弹与Boss碰撞
+							b.isDead = true;
+							//Boss血量-1
+							boss.setHp(boss.Hp - 1);
+							//在Boss上添加3个Boss爆炸效果
+							vcBoom.add(new Boom(bmpBoosBoom,boss.x + 25, boss.y + 30, 5));
+							vcBoom.add(new Boom(bmpBoosBoom,boss.x + 35, boss.y + 40, 5));
+							vcBoom.add(new Boom(bmpBoosBoom,boss.x + 45, boss.y + 50, 5));
+						}
+					}
+				}
 			}
 			// 每秒添加一个主角子弹
 			countPlayerBullet++;
@@ -397,6 +454,12 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 						}
 					} else {
 						// Boss绘制
+
+						boss.draw(canvas, paint);
+						//Boss的子弹逻辑
+						for(int i = 0; i < vcBulletBoss.size(); i ++) {
+							vcBulletBoss.elementAt(i).draw(canvas, paint);
+						}
 					}
 					// 处理主角子弹的绘制
 					for (int i = 0; i < vcBulletPlayer.size(); i++) {
@@ -409,6 +472,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					}
 					//测试用
 					canvas.drawText("enemyArrayIndex = " + enemyArrayIndex, 200, 200, paint);
+					
+					
 					
 					break;
 				case GAME_WIN:

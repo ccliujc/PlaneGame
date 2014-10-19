@@ -24,6 +24,19 @@ public class Bullet {
 	//子弹是否超屏，优化处理
 	public boolean isDead;
 	
+	//Boss疯狂状态下子弹相关成员变量
+	private int dir;//当前Boss子弹方向
+	//8方向常量
+	public static final int DIR_UP = -1;
+	public static final int DIR_DOWN = 2;
+	public static final int DIR_LEFT = 3;
+	public static final int DIR_RIGHT = 4;
+	public static final int DIR_UP_RIGHT = 5;
+	public static final int DIR_UP_LEFT = 6;
+	public static final int DIR_DOWN_LEFT = 7;
+	public static final int DIR_DOWN_RIGHT = 8;
+	
+	
 	//子弹的构造函数
 	public Bullet(Bitmap bmpBullet, int bulletX, int bulletY, int bulletType) {
 		this.bmpBullet = bmpBullet;
@@ -46,6 +59,25 @@ public class Bullet {
 			break;
 		}
 	}
+	
+	/**
+	 * 专用于处理Boss疯狂状态下创建的子弹
+	*@param bmpBullet
+	*@param bulletX
+	*@param bulletY
+	*@param bulletType
+	*@param Dir
+	*/
+	
+	public Bullet(Bitmap bmpBullet, int bulletX, int bulletY, int bulletType, int dir) {
+		this.bmpBullet = bmpBullet;
+		this.bulletX = bulletX;
+		this.bulletY = bulletY;
+		this.bulletType = bulletType;
+		speed = 5;
+		this.dir = dir;
+	}
+	
 	//子弹的绘制
 	public void draw(Canvas canvas, Paint paint) {
 		canvas.drawBitmap(bmpBullet, bulletX, bulletY,paint);
@@ -70,7 +102,38 @@ public class Bullet {
 			}
 			break;
 		case BULLET_BOSS:
-			//Boss的子弹逻辑待实现
+			//Boss疯狂状态下的子弹逻辑待实现
+			switch(dir) {
+			//各方向上的子弹
+			case DIR_UP:
+				bulletY -= speed;
+				break;
+			case DIR_DOWN:
+				bulletY += speed;
+				break;
+			case DIR_LEFT:
+				bulletX -= speed;
+				break;
+			case DIR_RIGHT:
+				bulletX += speed;
+				break;
+			case DIR_UP_LEFT:
+				bulletY -= speed;
+				bulletX -= speed;
+				break;
+			case DIR_UP_RIGHT:
+				bulletY -= speed;
+				bulletX += speed;
+				break;
+			case DIR_DOWN_LEFT:
+				bulletY += speed;
+				bulletX -= speed;
+				break;
+			case DIR_DOWN_RIGHT:
+				bulletY += speed;
+				bulletX += speed;
+				break;
+			}
 			break;
 		}
 	}
