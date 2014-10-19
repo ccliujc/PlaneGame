@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -119,6 +120,13 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 		// *总忘记写啊喂
 		setFocusable(true);
+		
+		//要自定义back按键 还需要在 视图设置一下该函数
+		setFocusableInTouchMode(true);
+		
+		//设置背景常亮
+		this.setKeepScreenOn(true);
+		
 	}
 
 	@Override
@@ -526,6 +534,30 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		//处理back返回按键
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			//游戏胜利、失败、进行时都默认返回菜单
+			if(gameState == GAMEING || gameState == GAME_WIN || gameState == GAME_LOST) {
+				gameState = GAME_MENU;
+				isBoss = false;
+				//重置游戏
+				initGame();
+				//重置怪物出场
+				enemyArrayIndex = 0;
+			}else if(gameState == GAME_MENU) {
+				//当前游戏状态在菜单界面，默认返回按键退出游戏
+				MainActivity.instance.finish();
+				System.exit(0);
+			}
+			//表示此按键已处理，不在交给系统处理
+			//从而避免游戏呗切入后台
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }
