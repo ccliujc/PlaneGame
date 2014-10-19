@@ -93,6 +93,12 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	private Vector<Bullet> vcBulletPlayer = new Vector<Bullet>();
 	// 添加子弹的计数器
 	private int countPlayerBullet;
+	
+	
+	//爆炸效果容器
+	private Vector<Boom> vcBoom = new Vector<Boom>();
+	
+	
 
 	public MySurfaceView(Context context) {
 		super(context);
@@ -240,7 +246,19 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					// 取出敌机容器的每个元与主角子弹遍历判断
 					if (vcEnemy.elementAt(j).isCollisionWith(blPlayer)) {
 						// 添加爆咋效果
+						vcBoom.add(new Boom(bmpBoom, vcEnemy.elementAt(j).x, vcEnemy.elementAt(j).y, 7));
 					}
+				}
+			}
+			
+			//爆炸效果逻辑
+			for (int i = 0; i < vcBoom.size(); i ++) {
+				Boom boom = vcBoom.elementAt(i);
+				if(boom.playEnd) {
+					//播放完毕的从容器中删除
+					vcBoom.removeElementAt(i);
+				} else {
+					vcBoom.elementAt(i).logic();
 				}
 			}
 
@@ -384,7 +402,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					for (int i = 0; i < vcBulletPlayer.size(); i++) {
 						vcBulletPlayer.elementAt(i).draw(canvas, paint);
 					}
-
+					
+					//爆炸效果绘制
+					for(int i = 0; i < vcBoom.size(); i++) {
+						vcBoom.elementAt(i).draw(canvas,paint);
+					}
+					//测试用
+					canvas.drawText("enemyArrayIndex = " + enemyArrayIndex, 200, 200, paint);
+					
 					break;
 				case GAME_WIN:
 					break;
