@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 public class Boss {
 	//Boss的血量
-	public int Hp = 50;
+	public int Hp = 40;
 	//Boss的图片资源
 	private Bitmap bmpBoss;
 	//Boss的坐标

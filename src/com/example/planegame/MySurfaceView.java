@@ -347,11 +347,23 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 				}
 
 			} else {
+				//不知道为什么在Boss出现后还 貌似有普通的怪出现 但不显示 会被击中 会爆炸 会发射子弹 我会掉血！
+				//暂时加入下面的代码 希望能解决这个问题
+				//暂时解决问题 但是原本就不应该出这样的问题啊啊！ 还没想明白！
+				for (int i = 0; i < vcEnemy.size(); i++) {
+					Enemy e = vcEnemy.elementAt(i);
+					vcEnemy.removeElement(e);
+				}
+				for (int i = 0; i < vcBullet.size(); i++) {
+					Bullet b = vcBullet.elementAt(i);
+					vcBullet.removeElement(b);
+				}
+				
 				// Boss逻辑
 				//Boss相关逻辑
-				//每0.5秒添加一个Boss子弹
+				//每1秒添加一个Boss子弹
 				boss.logic();
-				if(countPlayerBullet % 10 == 0){
+				if(countPlayerBullet % 20 == 0){
 					//Boss没有发疯之前的普通子弹
 					vcBulletBoss.add(new Bullet(bmpBossBullet, boss.x + 35, boss.y + 40, Bullet.BULLET_FLY));
 				}
@@ -470,13 +482,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 					for(int i = 0; i < vcBoom.size(); i++) {
 						vcBoom.elementAt(i).draw(canvas,paint);
 					}
-					//测试用
-					canvas.drawText("enemyArrayIndex = " + enemyArrayIndex, 200, 200, paint);
+					/*//测试用
+					canvas.drawText("enemyArrayIndex = " + enemyArrayIndex, 200, 200, paint);*/
 					
 					
 					
 					break;
 				case GAME_WIN:
+					canvas.drawBitmap(bmpGameWin, 0, 0, paint);
 					break;
 				case GAME_LOST:
 					canvas.drawBitmap(bmpGameLost, 0, 0, paint);
