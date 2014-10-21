@@ -20,15 +20,22 @@ import com.planegame.R;
 
 public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	// 貌似想要在别的类里面 通过“类名.常量”用变量，就得将常量定义为public static 类型 常量；
+	//声明屏幕的宽高
 	public static int screenW;
 	public static int screenH;
-	private boolean flag;
-
+	
+	
+	//声明一个画笔
 	private Paint paint;
+	//声明一个画布
 	private Canvas canvas;
+	//用于控制SurfaceView
 	private SurfaceHolder sfh;
-
+	
+	//声明一条线程
 	private Thread th;
+	//线程消亡标识位
+	private boolean flag;
 
 	// 定义游戏状态常量
 	public static final int GAME_MENU = 0;// 游戏菜单 开始
@@ -105,20 +112,25 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	//Boss的子弹容器
 	public static Vector<Bullet> vcBulletBoss;
 	
+	/**
+	 * SurfaceView初始化函数*/
 	
 	public MySurfaceView(Context context) {
 		super(context);
+		//实例一个画笔
 		paint = new Paint();
+		//设置画笔颜色为黄色
 		paint.setColor(Color.YELLOW);
 
 		// *实例化一个Canvas 不知道有没有必要 模仿的例子里面没有写
 		canvas = new Canvas();
 
-		// *总写错诶
+		// 实例SurfaceHolder
 		sfh = this.getHolder();
+		// 为SurfaceView添加状态监听
 		sfh.addCallback(this);
 
-		// *总忘记写啊喂
+		//设置焦点    *总忘记写啊喂 
 		setFocusable(true);
 		
 		//要自定义back按键 还需要在 视图设置一下该函数
@@ -128,12 +140,20 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		this.setKeepScreenOn(true);
 		
 	}
+	
+	/**
+	 * SurfaceView视图发生改变，响应此函数
+	 * */
 
 	@Override
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
 
 	}
+	
+	/**
+	 * SurfaceView视图创建，响应此函数
+	 * */
 
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
@@ -150,6 +170,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		th.start();
 
 	}
+	
+	/**
+	 * SurfaceView视图消亡时，响应此函数
+	 * */
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder arg0) {
@@ -225,6 +249,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 				}
 		}
 	}
+	
+	/**
+	 *游戏逻辑
+	 * */
 
 	private void logic() {
 		// 逻辑处理函数根据游戏状态不同进行不同处理
@@ -440,7 +468,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 			break;
 		}
 	}
-
+	
+	/**
+	 * 自定义游戏绘图函数*/
 	private void myDraw() {
 		try {
 
@@ -515,6 +545,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 				sfh.unlockCanvasAndPost(canvas);
 		}
 	}
+	
+	/**
+	 * 触屏事件监听*/
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -535,6 +568,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 		}
 		return true;
 	}
+	
+	/**
+	 * 按键事件监听*/
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

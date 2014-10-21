@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		//设置上部的信息导航条
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//显示自定义的Surface视图
 		setContentView(new MySurfaceView(this));
 	}
 }
