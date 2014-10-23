@@ -1,4 +1,4 @@
-package com.example.planegame;
+﻿package com.example.planegame;
 
 import java.util.Random;
 import java.util.Vector;
@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Debug;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -157,8 +158,12 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
+		Debug.startMethodTracing("debug");//TraceView效率检测工具 此处开始调试
+		//会在“/sdcard”目录下生成一个名叫“debug.trace”的追踪文件
+		
 		screenW = this.getWidth();
 		screenH = this.getHeight();
+		 
 
 		// 一开始把initGame();放到MySurfaceView的构造函数中了
 		// 就导致 GameMenu中的背景图正常显示 Button第一次打开程序时不显示 需要按一次“返回键”重新进入游戏后才能正常显示
@@ -178,7 +183,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 	@Override
 	public void surfaceDestroyed(SurfaceHolder arg0) {
 		flag = false;
-	}
+		Debug.stopMethodTracing();//TraceView效率检测工具 此处结束调试
+		 //一般好像是放到这里的
+	
+		}
 
 	private void initGame() {
 		// 放置游戏切入后台重新进入游戏时，游戏被重置！
@@ -585,9 +593,12 @@ public class MySurfaceView extends SurfaceView implements Runnable, Callback {
 				//重置怪物出场
 				enemyArrayIndex = 0;
 			}else if(gameState == GAME_MENU) {
+				
 				//当前游戏状态在菜单界面，默认返回按键退出游戏
 				MainActivity.instance.finish();
 				System.exit(0);
+				
+				
 			}
 			//表示此按键已处理，不在交给系统处理
 			//从而避免游戏呗切入后台
